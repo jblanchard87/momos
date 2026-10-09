@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mom.OS has moved</title>
+  <meta name="robots" content="noindex" />
+  <meta id="refresh" http-equiv="refresh" content="2;url=https://mom-os.github.io/" />
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7f1ea; color: #2c2a28;
+      display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; text-align: center; }
+    a { color: #3d6b6e; font-weight: 650; }
+  </style>
+  <script>
+    (function () {
+      var hash = location.hash || '';
+      var target = 'https://mom-os.github.io/' + hash;
+      var meta = document.getElementById('refresh');
+      if (meta) meta.setAttribute('content', '0;url=' + target);
+      function go() { location.replace(target); }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations()
+          .then(function (regs) { return Promise.all(regs.map(function (r) { return r.unregister(); })); })
+          .catch(function () {})
+          .then(go);
+        // Also clear caches for old origin
+        if (window.caches && caches.keys) {
+          caches.keys().then(function (keys) {
+            return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+          }).catch(function () {});
+        }
+      } else {
+        go();
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Mom.OS moved to <a id="link" href="https://mom-os.github.io/">https://mom-os.github.io/</a>. Redirecting…</p>
+  <script>document.getElementById('link').href = 'https://mom-os.github.io/' + (location.hash || '');</script>
+</body>
+</html>
